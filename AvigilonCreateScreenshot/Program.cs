@@ -96,7 +96,7 @@ namespace AvigilonCreateScreenshot
 
             if (id != "" && direction != "")
             {
-                string folderPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "/MinimaxDataExchange/video";
+                string folderPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "/video";
                 if (!File.Exists(folderPath))
                 {
                     Directory.CreateDirectory(folderPath);
@@ -104,7 +104,7 @@ namespace AvigilonCreateScreenshot
 
                 Random random = new Random();
                 string fileName = $"{id}_{timeStamp:yyyyMMddHHmmss}_{random.Next(0, 9)}{random.Next(0, 9)}{random.Next(0, 9)}{random.Next(0, 9)}{random.Next(0, 9)}.xml";
-                string filePath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "/MinimaxDataExchange/video/" + fileName;
+                string filePath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "/video/" + fileName;
 
                 if (File.Exists(filePath))
                 {
@@ -112,7 +112,7 @@ namespace AvigilonCreateScreenshot
                 }
 
                 //string fileNameJpg = $"{id}_{timeStamp:yyyyMMddHHmmss}_{random.Next(0, 9)}{random.Next(0, 9)}{random.Next(0, 9)}{random.Next(0, 9)}{random.Next(0, 9)}.jpg";
-                //string filePathJpg = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "/MinimaxDataExchange/video/" + fileNameJpg;
+                //string filePathJpg = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "/video/" + fileNameJpg;
 
                 //if (File.Exists(filePathJpg))
                 //{
@@ -183,44 +183,49 @@ namespace AvigilonCreateScreenshot
             id = "";
             direction = "";
 
-            MinimaxDictionary[] minimaxDictionaryArray = new MinimaxDictionary[31];
+            MinimaxDictionary[] minimaxDictionaryArray = new MinimaxDictionary[32];
 
             minimaxDictionaryArray[0] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30403", direction = "backward" };
             minimaxDictionaryArray[1] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30404", direction = "forward" };
-            minimaxDictionaryArray[2] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30405", direction = "forward" };
-            minimaxDictionaryArray[3] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30406", direction = "forward" };
-            minimaxDictionaryArray[4] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30407", direction = "forward" };
-            minimaxDictionaryArray[5] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30408", direction = "forward" };
-            minimaxDictionaryArray[6] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30409", direction = "backward" };
-            minimaxDictionaryArray[7] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30410", direction = "forward" };
-            minimaxDictionaryArray[8] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30411", direction = "backward" };
-            minimaxDictionaryArray[9] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30412", direction = "forward" };
-            minimaxDictionaryArray[10] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30413", direction = "backward" };
-            minimaxDictionaryArray[11] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30414", direction = "forward" };
-            minimaxDictionaryArray[12] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30415", direction = "forward" };
-            minimaxDictionaryArray[13] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30416", direction = "forward" };
-            minimaxDictionaryArray[14] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30417", direction = "forward" };
-            minimaxDictionaryArray[15] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30418", direction = "forward" };
-            minimaxDictionaryArray[16] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30419", direction = "forward" };
-            minimaxDictionaryArray[17] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30420", direction = "backward" };
-            minimaxDictionaryArray[18] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30421", direction = "forward" };
-            minimaxDictionaryArray[19] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30422", direction = "forward" };
-            minimaxDictionaryArray[20] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30423", direction = "forward" };
-            minimaxDictionaryArray[21] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30424", direction = "forward" };
-            minimaxDictionaryArray[22] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30425", direction = "backward" };
-            minimaxDictionaryArray[23] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30426", direction = "backward" };
-            minimaxDictionaryArray[24] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30427", direction = "forward" };
-            minimaxDictionaryArray[25] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30428", direction = "forward" };
-            minimaxDictionaryArray[26] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30429", direction = "backward" };
-            minimaxDictionaryArray[27] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30430", direction = "forward" };
-            minimaxDictionaryArray[28] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30431", direction = "forward" };
-            minimaxDictionaryArray[29] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30432", direction = "forward" };
-            minimaxDictionaryArray[30] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30433", direction = "backward" };
+            minimaxDictionaryArray[2] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30434", direction = "forward" };
+            minimaxDictionaryArray[3] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30405", direction = "forward" };
+            minimaxDictionaryArray[4] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30406", direction = "forward" };
+            minimaxDictionaryArray[5] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30407", direction = "forward" };
+            minimaxDictionaryArray[6] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30408", direction = "forward" };
+            minimaxDictionaryArray[7] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30409", direction = "backward" };
+            minimaxDictionaryArray[8] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30410", direction = "forward" };
+            minimaxDictionaryArray[9] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30411", direction = "backward" };
+            minimaxDictionaryArray[10] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30412", direction = "forward" };
+            minimaxDictionaryArray[11] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30413", direction = "backward" };
+            minimaxDictionaryArray[12] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30414", direction = "forward" };
+            minimaxDictionaryArray[13] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30415", direction = "forward" };
+            minimaxDictionaryArray[14] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30416", direction = "forward" };
+            minimaxDictionaryArray[15] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30417", direction = "forward" };
+            minimaxDictionaryArray[16] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30418", direction = "forward" };
+            minimaxDictionaryArray[17] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30419", direction = "forward" };
+            minimaxDictionaryArray[18] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30420", direction = "backward" };
+            minimaxDictionaryArray[19] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30421", direction = "forward" };
+            minimaxDictionaryArray[20] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30422", direction = "forward" };
+            minimaxDictionaryArray[21] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30423", direction = "forward" };
+            minimaxDictionaryArray[22] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30424", direction = "forward" };
+            minimaxDictionaryArray[23] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30425", direction = "backward" };
+            minimaxDictionaryArray[24] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30426", direction = "backward" };
+            minimaxDictionaryArray[25] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30427", direction = "forward" };
+            minimaxDictionaryArray[26] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30428", direction = "forward" };
+            minimaxDictionaryArray[27] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30429", direction = "backward" };
+            minimaxDictionaryArray[28] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30430", direction = "forward" };
+            minimaxDictionaryArray[29] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30431", direction = "forward" };
+            minimaxDictionaryArray[30] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30432", direction = "forward" };
+            minimaxDictionaryArray[31] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30433", direction = "backward" };
 
             int serverId = 0;
             if (m_address.ToString() == "172.16.10.115")
             {
                 serverId = 1;
+            }
+            else if (m_address.ToString() == "127.0.0.1")
+            {
+                serverId = 2;
             }
 
             foreach (MinimaxDictionary minimaxDictionary in minimaxDictionaryArray)
@@ -236,96 +241,113 @@ namespace AvigilonCreateScreenshot
 
         static void Main(string[] args)
         {
-
             if (ParseCommandLine())
             {
-                InitAvigilon();
+                string filePathFinished = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "/video/" + m_address.ToString().Replace(".", "") + ".finished";
 
-                m_endPoint = new IPEndPoint(m_address, m_controlCenter.DefaultNvrPortNumber);
-                AvgError result = m_controlCenter.AddNvr(m_endPoint);
-
-                if (ErrorHelper.IsError(result))
+                if (!File.Exists(filePathFinished))
                 {
-                    Console.WriteLine("An error occurred while adding the NVR." + m_endPoint.Address);
-                }
+                    InitAvigilon();
 
-                DateTime waitEnd = DateTime.Now + new TimeSpan(0, 0, 10);
-                INvr nvr = null;
-                while (DateTime.Now < waitEnd && nvr == null)
-                {
-                    nvr = m_controlCenter.GetNvr(m_endPoint.Address);
+                    m_endPoint = new IPEndPoint(m_address, m_controlCenter.DefaultNvrPortNumber);
+                    AvgError result = m_controlCenter.AddNvr(m_endPoint);
+
+                    if (ErrorHelper.IsError(result))
+                    {
+                        Console.WriteLine("An error occurred while adding the NVR." + m_endPoint.Address);
+                    }
+
+                    DateTime waitEnd = DateTime.Now + new TimeSpan(0, 0, 10);
+                    INvr nvr = null;
+                    while (DateTime.Now < waitEnd && nvr == null)
+                    {
+                        nvr = m_controlCenter.GetNvr(m_endPoint.Address);
+                        if (nvr == null)
+                        {
+                            Thread.Sleep(500);
+                        }
+                    }
+
                     if (nvr == null)
                     {
-                        Thread.Sleep(500);
-                    }
-                }
-
-                if (nvr == null)
-                {
-                    Console.WriteLine("An error occurred while connecting to the NVR.");
-                }
-                else
-                {
-                    LoginResult loginResult = nvr.Login(m_userName, m_password);
-                    if (loginResult != 0)
-                    {
-                        Console.WriteLine("Failed to login to NVR: " + loginResult);
+                        Console.WriteLine("An error occurred while connecting to the NVR.");
                     }
                     else
                     {
-                        waitEnd = DateTime.Now + new TimeSpan(0, 0, 10);
-                        
-                        List<IDevice> devices = new List<IDevice>();
-                        while (DateTime.Now < waitEnd)
+                        LoginResult loginResult = nvr.Login(m_userName, m_password);
+                        if (loginResult != 0)
                         {
-                            devices = nvr.Devices;
+                            Console.WriteLine("Failed to login to NVR: " + loginResult);
+                        }
+                        else
+                        {
+                            waitEnd = DateTime.Now + new TimeSpan(0, 0, 10);
 
-                            if (devices.Count > 0)
+                            List<IDevice> devices = new List<IDevice>();
+                            while (DateTime.Now < waitEnd)
                             {
-                                break;
+                                devices = nvr.Devices;
+
+                                if (devices.Count > 0)
+                                {
+                                    break;
+                                }
+
+                                Thread.Sleep(500);
                             }
 
-                            Thread.Sleep(500);
-                        }
+                            bool deviceConnectedExists = false;
 
-                        // Получен список камер. Начинаем получение скриншотов
-                        foreach (IDevice device in devices)
-                        {
-                            if (device.Connected)
+                            // Получен список камер. Начинаем получение скриншотов
+                            foreach (IDevice device in devices)
                             {
-                                uint logicalId = device.Entities.FirstOrDefault().LogicalId;
-                                IEntityCamera camera = (IEntityCamera)device.GetEntityByLogicalId(logicalId);
-                                
-                                if (camera == null)
+                                if (device.Connected)
                                 {
-                                    Console.WriteLine("The given camera with LogicalId {0} is not connected to the NVR.", logicalId);
-                                }
-                                else
-                                {
-                                    IStreamGroup streamGroup = m_controlCenter.CreateStreamGroup(PlaybackMode.Live);
-                                    
-                                    if (m_controlCenter.CreateStreamCallback(camera, streamGroup, MediaCoding.Jpeg, out IStreamCallback stream) == AvgError.Success)
+                                    if (!deviceConnectedExists)
                                     {
-                                        stream.OutputSize = new Size(1920, 1080);
-                                        stream.Overlays = Overlay.ImageTime;
-                                        stream.Enable = true;
-                                        IFrame frame = stream.GetFrame(new TimeSpan(0, 1, 0));
-                                        DateTime timeStamp = DateTime.Now;
+                                        deviceConnectedExists = true;
+                                    }
 
-                                        byte[] byteFrame = frame.GetAsArray();
+                                    uint logicalId = device.Entities.FirstOrDefault().LogicalId;
+                                    IEntityCamera camera = (IEntityCamera)device.GetEntityByLogicalId(logicalId);
 
-                                        stream.Enable = false;
+                                    if (camera == null)
+                                    {
+                                        Console.WriteLine("The given camera with LogicalId {0} is not connected to the NVR.", logicalId);
+                                    }
+                                    else
+                                    {
+                                        IStreamGroup streamGroup = m_controlCenter.CreateStreamGroup(PlaybackMode.Live);
 
-                                        CreateXmlFile(byteFrame, logicalId, timeStamp);
+                                        if (m_controlCenter.CreateStreamCallback(camera, streamGroup, MediaCoding.Jpeg, out IStreamCallback stream) == AvgError.Success)
+                                        {
+                                            stream.OutputSize = new Size(2048, 1536);
+                                            stream.Overlays = Overlay.ImageTime;
+                                            stream.Enable = true;
+                                            IFrame frame = stream.GetFrame(new TimeSpan(0, 1, 0));
+                                            DateTime timeStamp = DateTime.Now;
+
+                                            byte[] byteFrame = frame.GetAsArray();
+
+                                            stream.Enable = false;
+
+                                            CreateXmlFile(byteFrame, logicalId, timeStamp);
+                                        }
                                     }
                                 }
                             }
+                            
+                            // отметка об окончании экспорта xml файлов при их наличии
+                            if (deviceConnectedExists)
+                            {
+                                File.Create(filePathFinished);
+                            }
                         }
                     }
-                }
 
-                m_controlCenter?.Dispose();
-                m_sdk.Shutdown();
+                    m_controlCenter?.Dispose();
+                    m_sdk.Shutdown();
+                }
             }
         }
     }
