@@ -34,7 +34,7 @@ namespace AvigilonCreateScreenshot
     {
         [XmlArray("cameras")]
         [XmlArrayItem("camera", typeof(Camera))]
-        public Camera[] Car { get; set; }
+        public Camera[] Cameras { get; set; }
     }
 
     class Program
@@ -45,7 +45,7 @@ namespace AvigilonCreateScreenshot
         private static IPAddress m_address;
         private static string m_userName = "";
         private static string m_password = "";
-        private static CameraCollection cameras;
+        private static CameraCollection cameraCollection;
 
         private static void InitAvigilon()
         {
@@ -198,7 +198,7 @@ namespace AvigilonCreateScreenshot
         {
             XmlSerializer serializer = new XmlSerializer(typeof(CameraCollection));
             StreamReader reader = new StreamReader(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "/configuration.xml");
-            cameras = (CameraCollection)serializer.Deserialize(reader);
+            cameraCollection = (CameraCollection)serializer.Deserialize(reader);
             reader.Close();
         }
 
@@ -213,7 +213,7 @@ namespace AvigilonCreateScreenshot
             id = "";
             direction = "";
 
-            foreach (Camera camera in cameras.Car)
+            foreach (Camera camera in cameraCollection.Cameras)
             {
                 if (camera.serverIp == m_address.ToString() && camera.cameraId == logicalId)
                 {
