@@ -7,16 +7,34 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Xml;
+using System.Xml.Serialization;
 using AvigilonDotNet;
 
 namespace AvigilonCreateScreenshot
 {
-    public class MinimaxDictionary
+    [Serializable]
+    public class Camera
     {
-        public int serverId;
-        public uint cameraId;
-        public string id;
-        public string direction;
+        [System.Xml.Serialization.XmlElement("serverIp")]
+        public string serverIp { get; set; }
+
+        [System.Xml.Serialization.XmlElement("cameraId")]
+        public uint cameraId { get; set; }
+
+        [System.Xml.Serialization.XmlElement("id")]
+        public string id { get; set; }
+
+        [System.Xml.Serialization.XmlElement("direction")]
+        public string direction { get; set; }
+    }
+
+    [Serializable]
+    [XmlRoot("cameraCollection")]
+    public class CameraCollection
+    {
+        [XmlArray("cameras")]
+        [XmlArrayItem("camera", typeof(Camera))]
+        public Camera[] Car { get; set; }
     }
 
     class Program
@@ -27,6 +45,7 @@ namespace AvigilonCreateScreenshot
         private static IPAddress m_address;
         private static string m_userName = "";
         private static string m_password = "";
+        private static CameraCollection cameras;
 
         private static void InitAvigilon()
         {
@@ -173,7 +192,18 @@ namespace AvigilonCreateScreenshot
         }
 
         /// <summary>
-        /// Словарь идентификаторов Минимакса
+        /// Чтение конфигурационного xml файла и занесение данных в cameras
+        /// </summary>
+        private static void MinimaxDictionaryInitialization()
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(CameraCollection));
+            StreamReader reader = new StreamReader(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "/configuration.xml");
+            cameras = (CameraCollection)serializer.Deserialize(reader);
+            reader.Close();
+        }
+
+        /// <summary>
+        /// Получение идентификатора Минимакса и направления из конфигурационного файла
         /// </summary>
         /// <param name="logicalId">идентификатор камеры на сервере Avigilon</param>
         /// <param name="id">Идентификатор минимакса</param>
@@ -183,57 +213,12 @@ namespace AvigilonCreateScreenshot
             id = "";
             direction = "";
 
-            MinimaxDictionary[] minimaxDictionaryArray = new MinimaxDictionary[32];
-
-            minimaxDictionaryArray[0] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30403", direction = "backward" };
-            minimaxDictionaryArray[1] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30404", direction = "forward" };
-            minimaxDictionaryArray[2] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30434", direction = "forward" };
-            minimaxDictionaryArray[3] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30405", direction = "forward" };
-            minimaxDictionaryArray[4] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30406", direction = "forward" };
-            minimaxDictionaryArray[5] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30407", direction = "forward" };
-            minimaxDictionaryArray[6] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30408", direction = "forward" };
-            minimaxDictionaryArray[7] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30409", direction = "backward" };
-            minimaxDictionaryArray[8] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30410", direction = "forward" };
-            minimaxDictionaryArray[9] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30411", direction = "backward" };
-            minimaxDictionaryArray[10] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30412", direction = "forward" };
-            minimaxDictionaryArray[11] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30413", direction = "backward" };
-            minimaxDictionaryArray[12] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30414", direction = "forward" };
-            minimaxDictionaryArray[13] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30415", direction = "forward" };
-            minimaxDictionaryArray[14] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30416", direction = "forward" };
-            minimaxDictionaryArray[15] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30417", direction = "forward" };
-            minimaxDictionaryArray[16] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30418", direction = "forward" };
-            minimaxDictionaryArray[17] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30419", direction = "forward" };
-            minimaxDictionaryArray[18] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30420", direction = "backward" };
-            minimaxDictionaryArray[19] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30421", direction = "forward" };
-            minimaxDictionaryArray[20] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30422", direction = "forward" };
-            minimaxDictionaryArray[21] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30423", direction = "forward" };
-            minimaxDictionaryArray[22] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30424", direction = "forward" };
-            minimaxDictionaryArray[23] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30425", direction = "backward" };
-            minimaxDictionaryArray[24] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30426", direction = "backward" };
-            minimaxDictionaryArray[25] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30427", direction = "forward" };
-            minimaxDictionaryArray[26] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30428", direction = "forward" };
-            minimaxDictionaryArray[27] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30429", direction = "backward" };
-            minimaxDictionaryArray[28] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30430", direction = "forward" };
-            minimaxDictionaryArray[29] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30431", direction = "forward" };
-            minimaxDictionaryArray[30] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30432", direction = "forward" };
-            minimaxDictionaryArray[31] = new MinimaxDictionary { serverId = 1, cameraId = 10, id = "30433", direction = "backward" };
-
-            int serverId = 0;
-            if (m_address.ToString() == "172.16.10.115")
+            foreach (Camera camera in cameras.Car)
             {
-                serverId = 1;
-            }
-            else if (m_address.ToString() == "127.0.0.1")
-            {
-                serverId = 2;
-            }
-
-            foreach (MinimaxDictionary minimaxDictionary in minimaxDictionaryArray)
-            {
-                if (minimaxDictionary.serverId == serverId && minimaxDictionary.cameraId == logicalId)
+                if (camera.serverIp == m_address.ToString() && camera.cameraId == logicalId)
                 {
-                    id = minimaxDictionary.id;
-                    direction = minimaxDictionary.direction;
+                    id = camera.id;
+                    direction = camera.direction;
                     break;
                 }
             }
@@ -243,6 +228,8 @@ namespace AvigilonCreateScreenshot
         {
             if (ParseCommandLine())
             {
+                MinimaxDictionaryInitialization();
+
                 string filePathFinished = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "/video/" + m_address.ToString().Replace(".", "") + ".finished";
 
                 if (!File.Exists(filePathFinished))
