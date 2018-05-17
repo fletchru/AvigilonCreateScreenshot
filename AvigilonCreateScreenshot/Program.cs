@@ -46,6 +46,7 @@ namespace AvigilonCreateScreenshot
         private static string m_userName = "";
         private static string m_password = "";
         private static CameraCollection cameraCollection;
+        private static int m_cameraCount = 0;
 
         private static void InitAvigilon()
         {
@@ -91,6 +92,13 @@ namespace AvigilonCreateScreenshot
                         else if (arg[1] == 'p')
                         {
                             m_password = value;
+                        }
+                        else if (arg[1] == 'c')
+                        {
+                            if (Int16.TryParse(value, out Int16 cameraCount))
+                            {
+                                m_cameraCount = cameraCount;
+                            }
                         }
                     }
                 }
@@ -275,7 +283,7 @@ namespace AvigilonCreateScreenshot
                             {
                                 devices = nvr.Devices;
 
-                                if (devices.Count > 0)
+                                if (devices.Count == m_cameraCount)
                                 {
                                     break;
                                 }
