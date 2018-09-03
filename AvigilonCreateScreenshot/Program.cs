@@ -303,32 +303,37 @@ namespace AvigilonCreateScreenshot
                                         deviceConnectedExists = true;
                                     }
 
-                                    uint logicalId = device.Entities.FirstOrDefault().LogicalId;
-                                    IEntityCamera camera = (IEntityCamera)device.GetEntityByLogicalId(logicalId);
+                                    IEntity iEntity = device.Entities.FirstOrDefault();
 
-                                    if (camera == null)
+                                    if (iEntity != null)
                                     {
-                                        Console.WriteLine("The given camera with LogicalId {0} is not connected to the NVR.", logicalId);
-                                    }
-                                    else
-                                    {
-                                        IStreamGroup streamGroup = m_controlCenter.CreateStreamGroup(PlaybackMode.Live);
+                                        uint logicalId = iEntity.LogicalId;
+                                        IEntityCamera camera = (IEntityCamera)device.GetEntityByLogicalId(logicalId);
 
-                                        if (m_controlCenter.CreateStreamCallback(camera, streamGroup, MediaCoding.Jpeg, out IStreamCallback stream) == AvgError.Success)
+                                        if (camera == null)
                                         {
-                                            stream.OutputSize = new Size(2048, 1536);
-                                            stream.Overlays = Overlay.ImageTime;
-                                            stream.Enable = true;
-                                            IFrame frame = stream.GetFrame(new TimeSpan(0, 1, 0));
-                                            DateTime timeStamp = DateTime.Now;
-
-                                            byte[] byteFrame = frame.GetAsArray();
-
-                                            stream.Enable = false;
-
-                                            CreateXmlFile(byteFrame, logicalId, timeStamp);
+                                            Console.WriteLine("The given camera with LogicalId {0} is not connected to the NVR.", logicalId);
                                         }
-                                    }
+                                        else
+                                        {
+                                            IStreamGroup streamGroup = m_controlCenter.CreateStreamGroup(PlaybackMode.Live);
+
+                                            if (m_controlCenter.CreateStreamCallback(camera, streamGroup, MediaCoding.Jpeg, out IStreamCallback stream) == AvgError.Success)
+                                            {
+                                                stream.OutputSize = new Size(2048, 1536);
+                                                stream.Overlays = Overlay.ImageTime;
+                                                stream.Enable = true;
+                                                IFrame frame = stream.GetFrame(new TimeSpan(0, 1, 0));
+                                                DateTime timeStamp = DateTime.Now;
+
+                                                byte[] byteFrame = frame.GetAsArray();
+
+                                                stream.Enable = false;
+
+                                                CreateXmlFile(byteFrame, logicalId, timeStamp);
+                                            }
+                                        }
+                                    }                                    
                                 }
                             }
                             
