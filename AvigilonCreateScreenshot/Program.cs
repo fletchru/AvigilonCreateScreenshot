@@ -253,89 +253,91 @@ namespace AvigilonCreateScreenshot
                     {
                         Console.WriteLine("An error occurred while adding the NVR." + m_endPoint.Address);
                     }
-
-                    // Start m_controlCenter.GetNvr
-                    Activity activity = new Activity();
-                    activity.Setup().Wait();
-
-                    if (nvr == null)
-                    {
-                        Console.WriteLine("An error occurred while connecting to the NVR.");
-                    }
                     else
                     {
-                        LoginResult loginResult = nvr.Login(m_userName, m_password);
-                        if (loginResult != 0)
+                        // Start m_controlCenter.GetNvr
+                        Activity activity = new Activity();
+                        activity.Setup().Wait();
+
+                        if (nvr == null)
                         {
-                            Console.WriteLine("Failed to login to NVR: " + loginResult);
+                            Console.WriteLine("An error occurred while connecting to the NVR.");
                         }
                         else
                         {
-                            DateTime waitEnd = DateTime.Now + new TimeSpan(0, 0, 10);
-
-                            List<IDevice> devices = new List<IDevice>();
-                            while (DateTime.Now < waitEnd)
+                            LoginResult loginResult = nvr.Login(m_userName, m_password);
+                            if (loginResult != 0)
                             {
-                                devices = nvr.Devices;
-
-                                if (devices.Count == m_cameraCount)
-                                {
-                                    break;
-                                }
-
-                                Thread.Sleep(500);
+                                Console.WriteLine("Failed to login to NVR: " + loginResult);
                             }
-
-                            bool deviceConnectedExists = false;
-
-                            // Получен список камер. Начинаем получение скриншотов
-                            foreach (IDevice device in devices)
+                            else
                             {
-                                if (device.Connected)
+                                DateTime waitEnd = DateTime.Now + new TimeSpan(0, 0, 10);
+
+                                List<IDevice> devices = new List<IDevice>();
+                                while (DateTime.Now < waitEnd)
                                 {
-                                    if (!deviceConnectedExists)
+                                    devices = nvr.Devices;
+
+                                    if (devices.Count == m_cameraCount)
                                     {
-                                        deviceConnectedExists = true;
+                                        break;
                                     }
 
-                                    IEntity iEntity = device.Entities.FirstOrDefault();
+                                    Thread.Sleep(500);
+                                }
 
-                                    if (iEntity != null)
+                                bool deviceConnectedExists = false;
+
+                                // Получен список камер. Начинаем получение скриншотов
+                                foreach (IDevice device in devices)
+                                {
+                                    if (device.Connected)
                                     {
-                                        uint logicalId = iEntity.LogicalId;
-                                        IEntityCamera camera = (IEntityCamera)device.GetEntityByLogicalId(logicalId);
-
-                                        if (camera == null)
+                                        if (!deviceConnectedExists)
                                         {
-                                            Console.WriteLine("The given camera with LogicalId {0} is not connected to the NVR.", logicalId);
+                                            deviceConnectedExists = true;
                                         }
-                                        else
+
+                                        IEntity iEntity = device.Entities.FirstOrDefault();
+
+                                        if (iEntity != null)
                                         {
-                                            IStreamGroup streamGroup = m_controlCenter.CreateStreamGroup(PlaybackMode.Live);
+                                            uint logicalId = iEntity.LogicalId;
+                                            IEntityCamera camera = (IEntityCamera)device.GetEntityByLogicalId(logicalId);
 
-                                            if (m_controlCenter.CreateStreamCallback(camera, streamGroup, MediaCoding.Jpeg, out IStreamCallback stream) == AvgError.Success)
+                                            if (camera == null)
                                             {
-                                                stream.OutputSize = new Size(2048, 1536);
-                                                stream.Overlays = Overlay.ImageTime;
-                                                stream.Enable = true;
-                                                IFrame frame = stream.GetFrame(new TimeSpan(0, 1, 0));
-                                                DateTime timeStamp = DateTime.Now;
+                                                Console.WriteLine("The given camera with LogicalId {0} is not connected to the NVR.", logicalId);
+                                            }
+                                            else
+                                            {
+                                                IStreamGroup streamGroup = m_controlCenter.CreateStreamGroup(PlaybackMode.Live);
 
-                                                byte[] byteFrame = frame.GetAsArray();
+                                                if (m_controlCenter.CreateStreamCallback(camera, streamGroup, MediaCoding.Jpeg, out IStreamCallback stream) == AvgError.Success)
+                                                {
+                                                    stream.OutputSize = new Size(2048, 1536);
+                                                    stream.Overlays = Overlay.ImageTime;
+                                                    stream.Enable = true;
+                                                    IFrame frame = stream.GetFrame(new TimeSpan(0, 1, 0));
+                                                    DateTime timeStamp = DateTime.Now;
 
-                                                stream.Enable = false;
+                                                    byte[] byteFrame = frame.GetAsArray();
 
-                                                CreateXmlFile(byteFrame, logicalId, timeStamp);
+                                                    stream.Enable = false;
+
+                                                    CreateXmlFile(byteFrame, logicalId, timeStamp);
+                                                }
                                             }
                                         }
-                                    }                                    
+                                    }
                                 }
-                            }
-                            
-                            // отметка об окончании экспорта xml файлов при их наличии
-                            if (deviceConnectedExists)
-                            {
-                                File.Create(filePathFinished);
+
+                                // отметка об окончании экспорта xml файлов при их наличии
+                                if (deviceConnectedExists)
+                                {
+                                    File.Create(filePathFinished);
+                                }
                             }
                         }
                     }
