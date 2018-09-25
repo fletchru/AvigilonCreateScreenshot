@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using AvigilonDotNet;
@@ -46,7 +47,8 @@ namespace AvigilonCreateScreenshot
         private static string m_userName = "";
         private static string m_password = "";
         private static CameraCollection cameraCollection;
-        private static int m_cameraCount = 0;
+        private static int m_cameraCount;
+        private static INvr nvr;
 
         private static void InitAvigilon()
         {
@@ -252,16 +254,9 @@ namespace AvigilonCreateScreenshot
                         Console.WriteLine("An error occurred while adding the NVR." + m_endPoint.Address);
                     }
 
-                    DateTime waitEnd = DateTime.Now + new TimeSpan(0, 0, 10);
-                    INvr nvr = null;
-                    while (DateTime.Now < waitEnd && nvr == null)
-                    {
-                        nvr = m_controlCenter.GetNvr(m_endPoint.Address);
-                        if (nvr == null)
-                        {
-                            Thread.Sleep(500);
-                        }
-                    }
+                    // Start m_controlCenter.GetNvr
+                    Activity activity = new Activity();
+                    activity.Setup().Wait();
 
                     if (nvr == null)
                     {
@@ -276,7 +271,7 @@ namespace AvigilonCreateScreenshot
                         }
                         else
                         {
-                            waitEnd = DateTime.Now + new TimeSpan(0, 0, 10);
+                            DateTime waitEnd = DateTime.Now + new TimeSpan(0, 0, 10);
 
                             List<IDevice> devices = new List<IDevice>();
                             while (DateTime.Now < waitEnd)
@@ -347,6 +342,56 @@ namespace AvigilonCreateScreenshot
 
                     m_controlCenter?.Dispose();
                     m_sdk.Shutdown();
+                }
+            }
+        }
+
+        public class Activity
+        {
+            private CancellationTokenSource tokenSource;
+
+            public async Task Setup()
+            {
+                int timeout = 10000;  //Time out in milliseconds
+
+                tokenSource = new CancellationTokenSource();
+                var task = Task.Run(() => Run(), tokenSource.Token);   //Execute a long running process
+
+                //Check the task is delaying
+                if (await Task.WhenAny(task, Task.Delay(timeout)) == task)
+                {
+                    // task completed within the timeout
+                    //Console.WriteLine($"Task Completed Successfully {m_address}");
+                }
+                else
+                {
+                    // timeout
+                    //Cancel the task
+                    tokenSource.Cancel();
+
+                    Console.WriteLine($"Time Out. Aborting Task. Server {m_address}");
+
+                    task.Wait(); //Waiting for the task to throw OperationCanceledException
+                }
+            }
+
+            public void Run()
+            {
+                try
+                {
+                    while (nvr == null)
+                    {
+                        if (tokenSource.Token.IsCancellationRequested)
+                            tokenSource.Token.ThrowIfCancellationRequested();  //Stop the ling running process if the cancellation requested
+
+                        nvr = m_controlCenter.GetNvr(m_endPoint.Address);
+
+                        Thread.Sleep(500);
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    Console.WriteLine($"Task Aborted. Server {m_address}");
                 }
             }
         }
